@@ -1,18 +1,16 @@
-import Head from "next/head";
-import { useEffect, useState } from "react";
+import Head from 'next/head'
 
 interface Props {
-  children: JSX.Element | string | JSX.Element[];
-  title: string;
-  description: string;
+  children: JSX.Element | string | JSX.Element[]
+  title: string
+  description: string
 }
 
-export default function Layout({
+export default function Layout ({
   children,
   title,
-  description,
-}: Props): JSX.Element {
-
+  description
+}: Props) {
   return (
     <>
       <Head>
@@ -24,5 +22,5 @@ export default function Layout({
 
       <main className=''>{children}</main>
     </>
-  );
+  )
 }

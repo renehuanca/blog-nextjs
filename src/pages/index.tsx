@@ -1,15 +1,22 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
-import { getAllFilesMetaData } from '@/utils/mdx';
-import Link from 'next/link';
+import { getAllFilesMetaData } from '@/utils/mdx'
+import Link from 'next/link'
 
 const inter = Inter({ subsets: ['latin'] })
 
-interface Props {
-  posts: any
+interface Post {
+  title: string
+  name: string
+  slug: string
+  description: string
 }
 
-export default function Home({ posts }: Props) {
+interface Props {
+  posts: Post[]
+}
+
+export default function Home ({ posts }: Props) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
@@ -49,7 +56,7 @@ export default function Home({ posts }: Props) {
       </div>
 
       <div className="mb-32 grid gap-4 text-center lg:mb-0 lg:grid-cols-2 lg:text-left">
-        {posts.map((post: any) => (
+        {posts.map((post: Post) => (
           <Link
             href={`/blog/${post.slug}`}
             key={post.title}
@@ -85,10 +92,10 @@ export default function Home({ posts }: Props) {
   )
 }
 
-export async function getStaticProps() {
-  const posts = await getAllFilesMetaData();
+export async function getStaticProps (): Promise<{ props: Props }> {
+  const posts = await getAllFilesMetaData()
 
   return {
-    props: { posts },
-  };
+    props: { posts }
+  }
 }

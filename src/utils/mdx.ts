@@ -12,34 +12,34 @@ const root = process.cwd()
 export const getFiles = () => fs.readdirSync(path.join(root, 'src/data'))
 
 export const getFileBySlug = async (slug: string) => {
-    const mdxSource = fs.readFileSync(
-        path.join(root, 'src/data', `${slug}.mdx`),
-        'utf-8'
-    )
-    const { data, content } = await matter(mdxSource)
-    const source = await serialize(content, {
-        mdxOptions: {
-            remarkPlugins: [remarkGfm],
-            rehypePlugins: [mdxPrism, rehypeRaw]
-        }
-    })
-
-    return {
-        source,
-        frontmatter: {
-            slug,
-            ...data
-        }
+  const mdxSource = fs.readFileSync(
+    path.join(root, 'src/data', `${slug}.mdx`),
+    'utf-8'
+  )
+  const { data, content } = matter(mdxSource)
+  const source = await serialize(content, {
+    mdxOptions: {
+      remarkPlugins: [remarkGfm],
+      rehypePlugins: [mdxPrism, rehypeRaw]
     }
+  })
+
+  return {
+    source,
+    frontmatter: {
+      slug,
+      ...data
+    }
+  }
 }
 
 export const getAllFilesMetaData = () => {
-    const files = getFiles()
+  const files = getFiles()
 
-    return files.reduce((allPosts: any, postSlug) => {
-        const mdxSource = fs.readFileSync(path.join(root, 'src/data', postSlug), 'utf-8')
-        const { data } = matter(mdxSource)
+  return files.reduce((allPosts: any, postSlug) => {
+    const mdxSource = fs.readFileSync(path.join(root, 'src/data', postSlug), 'utf-8')
+    const { data } = matter(mdxSource)
 
-        return [{ ...data, slug: postSlug.replace('.mdx', '') }, ...allPosts]
-    }, [])
+    return [{ ...data, slug: postSlug.replace('.mdx', '') }, ...allPosts]
+  }, [])
 }

@@ -1,25 +1,12 @@
-export const copyToClipboard = (text: string): Promise<void> =>
-  new Promise((resolve, reject) => {
-    if (navigator?.clipboard) {
+export const copyToClipboard = async (text: string): Promise<void> => {
+  await new Promise<void>((resolve, reject) => {
+    try {
       const cb = navigator.clipboard
-
       cb.writeText(text).then(resolve).catch(reject)
-    } else {
-      try {
-        const body = document.querySelector('body')
 
-        const textarea = document.createElement('textarea')
-        body?.appendChild(textarea)
-
-        textarea.value = text
-        textarea.select()
-        document.execCommand('copy')
-
-        body?.removeChild(textarea)
-
-        resolve()
-      } catch (e) {
-        reject(e)
-      }
+      resolve()
+    } catch (e) {
+      reject(e)
     }
   })
+}

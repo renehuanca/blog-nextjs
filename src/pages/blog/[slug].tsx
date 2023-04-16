@@ -2,15 +2,20 @@ import { MDXRemote } from 'next-mdx-remote'
 import Image from 'next/image'
 
 import { getFileBySlug, getFiles } from '@/utils/mdx'
-import MDXComponents from "@/components/MDXComponents";
-import Layout from "@/components/Layout";
+import MDXComponents from '@/components/MDXComponents'
+import Layout from '@/components/Layout'
 
 interface PostProps {
-  source: any;
-  frontmatter: any;
+  source: any
+  frontmatter: {
+    name: string
+    title: string
+    description: string
+    date: string
+  }
 }
 
-export default function Post({ source, frontmatter }: PostProps): JSX.Element {
+export default function Post ({ source, frontmatter }: PostProps): JSX.Element {
   return (
     <Layout title={frontmatter.title} description={frontmatter.description}>
       <div className="container mx-auto px-6 md:px-8 text-base lg:text-lg dark:text-gray-300">
@@ -34,31 +39,30 @@ export default function Post({ source, frontmatter }: PostProps): JSX.Element {
         </div>
       </div>
     </Layout>
-  );
+  )
 }
 
-export async function getStaticProps({ params }: any) {
-  const { source, frontmatter } = await getFileBySlug(params.slug);
+export async function getStaticProps ({ params }: any) {
+  const { source, frontmatter } = await getFileBySlug(params.slug)
 
   return {
     props: {
       source,
-      frontmatter,
-    },
-  };
+      frontmatter
+    }
+  }
 }
 
-export async function getStaticPaths() {
-  const posts = await getFiles();
+export async function getStaticPaths () {
+  const posts = getFiles()
   const paths = posts.map((post) => ({
     params: {
-      slug: post.replace(/\.mdx/, ""),
-    },
-  }));
+      slug: post.replace(/\.mdx/, '')
+    }
+  }))
 
   return {
     paths,
-    fallback: false,
-  };
+    fallback: false
+  }
 }
-

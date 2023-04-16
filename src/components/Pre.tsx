@@ -1,24 +1,24 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from 'react'
 import { copyToClipboard } from '@/utils/copyToClipboard'
 
-type Props = {
+interface Props {
   children: JSX.Element
   className: string
 }
 
-export default function Pre({ children, className, ...props }: Props): JSX.Element {
+export default function Pre ({ children, className, ...props }: Props): JSX.Element {
   const preRef = useRef<HTMLPreElement>(null)
 
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
-    const timer = setTimeout(() => setCopied(false), 2000)
+    const timer = setTimeout(() => { setCopied(false) }, 2000)
 
-    return () => clearTimeout(timer)
+    return () => { clearTimeout(timer) }
   }, [copied])
 
-  const onClick = async () => {
-    if (preRef.current?.innerText) {
+  const handleClick = async () => {
+    if ((preRef.current?.innerText) != null) {
       copyToClipboard(preRef.current.innerText)
       setCopied(true)
     }
@@ -26,13 +26,13 @@ export default function Pre({ children, className, ...props }: Props): JSX.Eleme
 
   const preClassName = `${className} focus:outline-none`
   const copiedTextClasses = `hidden fade-in text-xs text-green-400 ${
-    copied ? "group-hover:flex" : ""
+    copied ? 'group-hover:flex' : ''
   }`
   const buttonClasses = `hidden transition bg-transparent border rounded-md p-2 focus:outline-none group-hover:flex fade-in ${
-    copied ? "border-green-400" : ""
-  } ${!copied ? "hover:border-gray-500 dark:border-gray-700 dark:hover:border-gray-400 focus:ring-4 focus:ring-gray-200 focus:ring-opacity-50" : ""}`
+    copied ? 'border-green-400' : ''
+  } ${!copied ? 'hover:border-gray-500 dark:border-gray-700 dark:hover:border-gray-400 focus:ring-4 focus:ring-gray-200 focus:ring-opacity-50' : ''}`
   const svgClasses = `h-4 w-4 pointer-events-none ${
-    !copied ? "text-gray-500 dark:text-gray-400" : "text-green-400"
+    !copied ? 'text-gray-500 dark:text-gray-400' : 'text-green-400'
   }`
 
   return (
@@ -50,7 +50,7 @@ export default function Pre({ children, className, ...props }: Props): JSX.Eleme
           <button
             type="button"
             aria-label="Copy to Clipboard"
-            onClick={onClick}
+            onClick={() => handleClick}
             disabled={copied}
             className={buttonClasses}
           >
@@ -66,7 +66,7 @@ export default function Pre({ children, className, ...props }: Props): JSX.Eleme
                 strokeLinejoin="round"
                 strokeWidth={2}
                 d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"
-                className={copied ? "hidden" : "block"}
+                className={copied ? 'hidden' : 'block'}
               />
 
               <path
@@ -74,7 +74,7 @@ export default function Pre({ children, className, ...props }: Props): JSX.Eleme
                 strokeLinejoin="round"
                 strokeWidth={2}
                 d="M5 13l4 4L19 7"
-                className={copied ? "block" : "hidden"}
+                className={copied ? 'block' : 'hidden'}
               />
             </svg>
           </button>
